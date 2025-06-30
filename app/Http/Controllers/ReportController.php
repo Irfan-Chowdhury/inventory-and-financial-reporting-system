@@ -54,7 +54,7 @@ class ReportController extends Controller
             ->get();
     }
 
-    private function calculateTotalExpenses($sales): float
+    public function calculateTotalExpenses($sales): float
     {
         $totalExpenses = 0;
         foreach ($sales as $sale) {

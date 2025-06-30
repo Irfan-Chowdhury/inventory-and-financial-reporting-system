@@ -96,6 +96,7 @@
     $(document).on('change', '.product-dropdown', function () {
         var selectedOption = $(this).find(':selected');
         var price = selectedOption.data('price');
+        console.log(price);
         var row = $(this).closest('tr');
         row.find('.price').val(price);
 
@@ -115,19 +116,21 @@
     $('#addRow').click(function () {
         const allProducts = @json($products);
         let html = `
-        <tr>
-            <td>
-                <select name="products[${row}][product_id]" class="form-control">
-                    @foreach($products as $product)
-                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                    @endforeach
-                </select>
-            </td>
-            <td><input type="number" name="products[${row}][quantity]" class="form-control qty"></td>
-            <td><input type="number" step="0.01" name="products[${row}][unit_price]" class="form-control price"></td>
-            <td><input type="text" class="form-control total" readonly></td>
-            <td><button type="button" class="btn btn-sm btn-danger removeRow">X</button></td>
-        </tr>`;
+            <tr>
+                <td>
+                    <select name="products[${row}][product_id]" class="form-control product-dropdown">
+                        <option value="">--- Select ---</option>
+                        @foreach($products as $product)
+                            <option value="{{ $product->id }}" data-price="{{ $product->sell_price }}">{{ $product->name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td><input type="number" name="products[${row}][quantity]" class="form-control qty" required></td>
+                <td><input type="number" step="0.01" name="products[${row}][unit_price]" class="form-control price" readonly></td>
+                <td><input type="text" class="form-control total" readonly></td>
+                <td><button type="button" class="btn btn-sm btn-danger removeRow">X</button></td>
+            </tr>`;
+
         $('#product_table tbody').append(html);
         row++;
     });
