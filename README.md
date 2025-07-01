@@ -123,6 +123,41 @@ npm install && npm run build
 php artisan serve
 ```
 
+## ✅ Test Case Screenshot
+
+This is a sample test result from running PEST tests:
+
+#### Product Test :
+
+run command : 
+```bash
+./vendor/bin/pest tests/Feature/ProductTest.php
+```
+
+![Test Case Screenshot](https://snipboard.io/6KcY9w.jpg)
+
+
+#### Sale Test :
+
+run command : 
+```bash
+./vendor/bin/pest tests/Feature/SaleTest.php
+```
+
+![Test Case Screenshot](https://snipboard.io/yluNnp.jpg)
+
+#### Report Test :
+
+run command : 
+```bash
+./vendor/bin/pest tests/Feature/ReportTest.php
+```
+
+![Test Case Screenshot](https://snipboard.io/zaHcEI.jpg)
+
+
+<br>
+
 ## 👨‍💻 Author
 
 **Md Irfan Chowdhury** <br>

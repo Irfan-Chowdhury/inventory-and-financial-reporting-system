@@ -1,15 +1,20 @@
 <?php
 
-// test('example', function () {
-//     $response = $this->get('/');
-
-//     $response->assertStatus(200);
-// });
 
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Http\Controllers\ReportController;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Services\ReportService;
+
+
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->userAuthenticated();
+});
+
 
 // beforeEach(function () {
 //     // Create product
@@ -103,12 +108,51 @@ beforeEach(function () {
 });
 
 test('it calculates total expenses correctly', function () {
-    $controller = new ReportController();
+    $reportService = new ReportService();
     $sales = Sale::with('saleItems.product')->get();
 
     // $expenses = $this->callPrivate($controller, 'calculateTotalExpenses', [$sales]);
-    $this->withoutExceptionHandling();
+    // $this->withoutExceptionHandling();
 
-    $expenses = $controller->calculateTotalExpenses($sales);
-    expect($expenses)->toBe(960925.0); // 10 * 100
+    $expenses = $reportService->calculateTotalExpenses($sales);
+    expect($expenses)->toBe(1000.0);
+});
+
+test('it calculates net profit correctly', function () {
+    $reportService = new ReportService();
+    $sales = Sale::with('saleItems.product')->get();
+    $expenses = 1000;
+
+    $profit = $reportService->calculateNetProfit($sales, $expenses);
+
+    expect($profit)->toBe(900.0); // 2000 - 1000 - 100
+});
+
+
+test('it builds summary report correctly', function () {
+    $reportService = new ReportService();
+    $sales = Sale::with('saleItems.product')->get();
+    $expenses = 1000;
+    $profit = 900;
+
+    $summary = $reportService->buildSummary($sales, $expenses, $profit);
+
+    expect($summary->totalSales)->toBe('2,000.00');
+    expect($summary->totalDiscount)->toBe('100.00');
+    expect($summary->totalVat)->toBe('95.00');
+    expect($summary->totalExpenses)->toBe('1,000.00');
+    expect($summary->netProfit)->toBe('900.00');
+});
+
+
+
+test('it builds detailed report correctly', function () {
+    $reportService = new ReportService();
+    $sales = Sale::with('saleItems.product')->get();
+
+    $details = $reportService->buildDetailedReport($sales);
+
+    expect($details)->toHaveCount(1);
+    expect($details[0]->expenses)->toBe('1,000.00');
+    expect($details[0]->profit)->toBe('900.00');
 });
