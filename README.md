@@ -90,38 +90,75 @@ Auto-managed journal breakdown per sale:
 ## ⚙️ Installation Guide
 
 ### Prerequisites:
-- PHP 8.x+
+- PHP 8.2+
 - Composer
-- Laravel 10/11
-- MySQL or MariaDB
+- MySQL
 - Node.js & npm (for frontend build if used)
 
 ---
 
 ### Setup Steps
 
+#### 1. Clone the repository :
+
 ```bash
-# 1. Clone the repository
 git clone https://github.com/your-username/inventory-finance-system.git
 cd inventory-finance-system
+```
 
-# 2. Install PHP dependencies
+#### 2. Install PHP dependencies
+
+```bash
 composer install
+```
 
-# 3. Copy .env file and configure
+#### 3. Copy .env file and configure
+
+```bash
 cp .env.example .env
-# ➤ Set database, app_url, etc.
+```
 
-# 4. Generate app key & run migrations
+#### 4. Set database, app_url, etc.
+
+```bash
+APP_URL=your_root_url
+SSO_REDIRECT_URL=your_redirect_url
+
+DB_CONNECTION=sqlite
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+
+# If your domain with https:// then comment out and set with proper data
+# If local machine, then comment the 3 lines
+SESSION_DOMAIN=.irfandev.xyz
+SESSION_SECURE_COOKIE=true
+SESSION_SAME_SITE=none
+```
+
+#### 5. Generate app key & run migrations
+
+```bash
 php artisan key:generate
 php artisan migrate --seed
+```
 
-# 5. (Optional) Install frontend dependencies
+
+#### 6. (Optional) Install frontend dependencies
+
+```bash
 npm install && npm run build
 
-# 6. Serve the application
+```
+
+#### 7. Serve the application
+```bash
 php artisan serve
 ```
+
+<br>
 
 ## ✅ Test Case Screenshot
 
